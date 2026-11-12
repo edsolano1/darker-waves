@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=Pirata+One&family=Yellowtail&family=Space+Mono:wght@400;700&display=swap">
 <style>
-/* Darker Waves day plan: countdown, official set times as a tap grid with a stage map, the day in order, merch and food. */
+/* Darker Waves day plan: countdown, official set times as a tap grid with a stage map, the day in order. */
 :root{
   color-scheme:dark;
   --bg:#0b0a12; --bg2:#13111c; --panel:#18151f; --ink:#ece8f2; --muted:#a199b0; --line:#2b2637;
@@ -62,7 +62,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:28px;margin:0;letter-s
 
 /* schedule grid */
 .layout{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
-@media (min-width:920px){.layout{grid-template-columns:minmax(0,1fr) 340px;align-items:start}}
+@media (min-width:920px){.layout{grid-template-columns:minmax(0,1fr) minmax(400px,46%);align-items:start}}
 .legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
 .legend i{display:inline-block;width:14px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
 .toggle{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--ink);cursor:pointer}
@@ -109,13 +109,13 @@ h2{font-family:var(--f-display);font-weight:700;font-size:28px;margin:0;letter-s
 .mapsvg{width:100%;height:auto;display:block;border-radius:8px;background:#141024;border:1px solid var(--line)}
 .mapsvg text{font-family:var(--f-display);font-weight:700;letter-spacing:.04em}
 .stg rect{fill:#2a2142;stroke:#4a3a78;stroke-width:2}
-.stg text{fill:#c9bff0;font-size:30px}
+.stg text{fill:#e4dcff;font-size:44px}
 .stg.on rect{fill:var(--amber);stroke:#fff}
 .stg.on text{fill:var(--amber-ink)}
 .stg.on .glow{opacity:1}
 .glow{opacity:0;transition:opacity .2s}
 .poi circle{stroke:#0b0a12;stroke-width:3}
-.poi text{fill:var(--ink);font-size:24px}
+.poi text{fill:var(--ink);font-size:34px}
 
 /* my day */
 .myday{display:grid;gap:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
@@ -196,6 +196,17 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
 .stg text{font-family:"Pirata One",Georgia,serif;font-weight:400;font-size:36px}
 .mapsvg text{font-family:"Pirata One",Georgia,serif;font-weight:400;letter-spacing:.03em}
 @media (max-width:520px){.colhead{font-size:16px}h2{font-size:30px}}
+
+/* big map */
+.mapsvg{cursor:zoom-in}
+.mapbtns{display:flex;flex-wrap:wrap;gap:8px}
+.mapbtns .btnlink{cursor:pointer;font-family:inherit;font-size:inherit}
+.mapzoom{position:fixed;inset:0;z-index:60;background:rgba(7,4,12,.94);display:flex;flex-direction:column;gap:10px;padding:max(14px,env(safe-area-inset-top)) 12px 14px}
+.mapzoom[hidden]{display:none}
+.mapzoom .zwrap{flex:1;min-height:0;overflow:auto;display:grid;place-items:center}
+.mapzoom svg{width:100%;height:100%;max-height:100%;cursor:zoom-out;background:#141024;border:1px solid #33224f;border-radius:10px}
+.mapzoom .zclose{align-self:flex-end;font:inherit;font-size:15px;background:#1b1230;color:#f3ecff;border:1px solid #4a3a78;border-radius:8px;padding:8px 16px;cursor:pointer}
+@media (max-width:700px) and (orientation:portrait){.mapzoom .zwrap{place-items:start}.mapzoom svg{width:auto;height:auto;min-width:170vw}}
 </style>
 
 </head>
@@ -257,10 +268,10 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
           <path d="M0,170 L700,800 L520,800 L0,330 Z" fill="#c9a85a" opacity=".22"/>
           <path d="M120,0 L1220,0 L1220,700 L1150,800 L700,800 L0,170 L0,0 Z" fill="#231b3d"/>
           <path d="M760,0 L1220,520 L1220,600 L700,0 Z" fill="#1a1530"/>
-          <text x="900" y="215" transform="rotate(41 900 215)" fill="#6d5fa0" font-size="26">PACIFIC COAST HWY</text>
-          <text x="60" y="760" fill="#8f86b8" font-size="26">OCEAN</text>
-          <g class="poi" id="poi-entry"><circle cx="1110" cy="740" r="16" fill="#ece8f2"/><text x="980" y="700">MAIN ENTRANCE</text></g>
-          <g class="poi"><circle cx="945" cy="530" r="12" fill="#8a829a"/><text x="965" y="538">ARCADE</text></g>
+          <text x="930" y="200" transform="rotate(41 930 200)" fill="#7d6fb4" font-size="32">PACIFIC COAST HWY</text>
+          <text x="60" y="760" fill="#9a90c6" font-size="34">OCEAN</text>
+          <g class="poi" id="poi-entry"><circle cx="1110" cy="740" r="16" fill="#ece8f2"/><text x="1090" y="700" text-anchor="end">MAIN ENTRANCE</text></g>
+          <g class="poi"><circle cx="945" cy="530" r="12" fill="#8a829a"/><text x="968" y="545">ARCADE</text></g>
           <g class="poi" id="poi-merch">
             <circle cx="910" cy="405" r="14" fill="#8fb8ff"/><text x="930" y="400">MERCH</text>
             <circle cx="125" cy="145" r="14" fill="#8fb8ff"/><text x="145" y="140">MERCH</text>
@@ -272,12 +283,12 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
             <circle cx="1040" cy="495" r="12" fill="#56d4c4"/>
             <circle cx="780" cy="640" r="12" fill="#56d4c4"/><text x="800" y="648">GA+ LOUNGE</text>
           </g>
-          <g class="stg" id="stg-dk"><circle class="glow" cx="470" cy="150" r="140" fill="url(#g)"/><rect x="380" y="110" width="180" height="80" rx="10"/><text x="470" y="160" text-anchor="middle">DARKER</text></g>
-          <g class="stg" id="stg-wv"><circle class="glow" cx="530" cy="290" r="140" fill="url(#g)"/><rect x="440" y="250" width="180" height="80" rx="10"/><text x="530" y="300" text-anchor="middle">WAVES</text></g>
-          <g class="stg" id="stg-bt"><circle class="glow" cx="700" cy="170" r="140" fill="url(#g)"/><rect x="605" y="130" width="190" height="80" rx="10"/><text x="700" y="180" text-anchor="middle">BLACK TIDE</text></g>
+          <g class="stg" id="stg-dk"><circle class="glow" cx="470" cy="150" r="160" fill="url(#g)"/><rect x="355" y="98" width="230" height="100" rx="12"/><text x="470" y="164" text-anchor="middle">DARKER</text></g>
+          <g class="stg" id="stg-wv"><circle class="glow" cx="530" cy="300" r="160" fill="url(#g)"/><rect x="415" y="250" width="230" height="100" rx="12"/><text x="530" y="316" text-anchor="middle">WAVES</text></g>
+          <g class="stg" id="stg-bt"><circle class="glow" cx="735" cy="170" r="160" fill="url(#g)"/><rect x="600" y="120" width="270" height="100" rx="12"/><text x="735" y="186" text-anchor="middle">BLACK TIDE</text></g>
         </svg>
         <div class="legend"><span><i style="background:#56d4c4"></i>Food</span><span><i style="background:#8fb8ff"></i>Merch</span></div>
-        <a class="btnlink" href="https://help.darkerwavesfest.com/article/1378-is-there-a-current-map-of-the-festival-grounds" target="_blank" rel="noopener">Open the official map ↗</a>
+        <div class="mapbtns"><button type="button" class="btnlink" id="zoomMap">Enlarge map</button><a class="btnlink" href="https://help.darkerwavesfest.com/article/1378-is-there-a-current-map-of-the-festival-grounds" target="_blank" rel="noopener">Official map ↗</a></div>
       </aside>
     </div>
   </section>
@@ -285,34 +296,11 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
   <section class="sec" aria-label="My day">
     <div class="sec-head"><h2>My day</h2><span class="eyebrow">California time</span></div>
     <div class="myday" id="myday"></div>
-    <p class="dropped" id="dropped"></p>
   </section>
 
-  <section class="sec" aria-label="Merch and food">
-    <div class="sec-head"><h2>Merch and food</h2></div>
-    <div class="cards">
-      <article class="card">
-        <h3>Merch</h3>
-        <span class="tag">12:15 to 1:15 PM</span>
-        <p>Go first thing, while lines are short and sizes are in stock. The closest tent is on the main path from the entrance, just past the Arcade. A second one sits on the beach side, west of the VIP lounge.</p>
-        <p class="note">Clear bags only, so a locker is worth it if you buy more than a shirt.</p>
-      </article>
-      <article class="card">
-        <h3>Food</h3>
-        <span class="tag">2:10 to 2:40 PM</span>
-        <p>The festival hasn't posted its food vendors on the site or the map yet. The map shows food at five spots. The one between Waves and Black Tide is closest to your sets.</p>
-        <ul>
-          <li>Go for a plate with beans, tofu or a veggie patty for the protein.</li>
-          <li>Skip anything with olives.</li>
-          <li>The festival is cashless, so bring a card or phone.</li>
-          <li>No outside food. An empty plastic bottle is fine for the water stations.</li>
-        </ul>
-      </article>
-    </div>
-  </section>
 
-  <p class="foot">Set times and the map come from the festival's own <a href="https://www.darkerwavesfest.com/schedule" target="_blank" rel="noopener">schedule</a> and <a href="https://help.darkerwavesfest.com/article/1378-is-there-a-current-map-of-the-festival-grounds" target="_blank" rel="noopener">help center</a>, both updated Nov 11. The festival says times can change, so give the schedule one last look Saturday morning. Gates open 11 AM and close 10 PM. No re-entry. The small map here is a sketch of theirs. Fan made, not affiliated with the festival.</p>
 </main>
+<div class="mapzoom" id="mapzoom" role="dialog" aria-label="Festival map, enlarged" hidden><button type="button" class="zclose" id="zoomClose">Close</button><div class="zwrap" id="zwrap"></div></div>
 
 <script>
 (function(){
@@ -403,7 +391,16 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     return '<div class="row'+(p.k?" k-"+p.k:"")+'" data-s="'+p.s+'" data-e="'+(p.e||p.s+15)+'"><span class="t">'+t+'</span><span class="w">'+w+(p.sub?'<span class="s">'+esc(p.sub)+'</span>':'')+'</span></div>';
   }).join("");
   $("myday").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(b){select(+b.dataset.i); if(window.innerWidth>=920) $("board").scrollIntoView({behavior:"smooth",block:"start"});}});
-  $("dropped").innerHTML="<b>Not in your day:</b> "+DROPPED.map(r=>esc(r[0])+" ("+esc(r[1])+")").join(". ")+".";
+
+
+  /* ---------- enlarge map ---------- */
+  function openZoom(){const c=$("map").cloneNode(true);c.removeAttribute("id");c.querySelectorAll("[id]").forEach(n=>{if(n.tagName.toLowerCase()!=="radialgradient")n.removeAttribute("id");else n.setAttribute("id","gz");});c.querySelectorAll('[fill="url(#g)"]').forEach(n=>n.setAttribute("fill","url(#gz)"));$("zwrap").innerHTML="";$("zwrap").appendChild(c);$("mapzoom").hidden=false;document.body.style.overflow="hidden";}
+  function closeZoom(){$("mapzoom").hidden=true;$("zwrap").innerHTML="";document.body.style.overflow="";}
+  $("zoomMap").addEventListener("click",openZoom);
+  $("map").addEventListener("click",openZoom);
+  $("zoomClose").addEventListener("click",closeZoom);
+  $("zwrap").addEventListener("click",e=>{if(e.target.closest("svg"))closeZoom();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("mapzoom").hidden)closeZoom();});
 
   /* ---------- now marker on the day ---------- */
   const GATES=Date.UTC(2026,10,14,19,0); // 11 AM PST
