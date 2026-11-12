@@ -475,7 +475,7 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
   }
   function standAt(st){
     const [x,y]=SPOT[st];
-    $("walk").innerHTML='<circle class="here-ring" cx="'+x+'" cy="'+y+'" r="16"/><circle cx="'+x+'" cy="'+y+'" r="11"/><path class="tip" d="M'+x+','+(y-20)+' L'+(x-14)+','+(y-46)+' L'+(x+14)+','+(y-46)+' Z"/>';
+    $("walk").innerHTML='<circle class="here-ring" cx="'+x+'" cy="'+y+'" r="16"/><circle cx="'+x+'" cy="'+y+'" r="11"/><path class="tip" d="M'+x+','+(y+20)+' L'+(x-14)+','+(y+46)+' L'+(x+14)+','+(y+46)+' Z"/>';
   }
   function drawRoute(x){
     const g=$("walk"), r=$("pRoute"), from=prevFor(x);
