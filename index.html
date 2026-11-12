@@ -214,6 +214,22 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
 .who-toggle button{font:inherit;font-size:14px;font-weight:600;color:#cfc3f0;background:transparent;border:0;border-radius:999px;padding:7px 16px;cursor:pointer;min-height:36px}
 .who-toggle button[aria-checked="true"]{background:linear-gradient(135deg,#ff4fa3,#9b6bff);color:#fff;box-shadow:0 0 16px rgba(255,79,163,.45)}
 .who-toggle button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* controls bar, view switch, small countdown, VIP split */
+.controls{position:sticky;top:0;z-index:15;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;padding:10px 0;margin-bottom:-6px;background:linear-gradient(rgba(7,4,12,.92),rgba(7,4,12,.78));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.sec[hidden]{display:none}
+.legend b{font-weight:400}
+.count{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.count-label{font-size:17px}
+.digits{gap:6px}
+.cell{min-width:0;padding:4px 8px;border-radius:6px;display:flex;align-items:baseline;gap:3px;box-shadow:none}
+.cell .n{font-size:17px;text-shadow:0 0 6px rgba(255,79,163,.5)}
+.cell .u{font-size:9px;letter-spacing:.08em}
+.vip polygon{fill:rgba(255,79,163,.22);stroke:#ff4fa3;stroke-width:3;stroke-dasharray:10 7}
+.vip text{fill:#ffd1e8;font-size:40px}
+.walk path{fill:none;stroke:var(--gold);stroke-width:4;stroke-dasharray:4 9;stroke-linecap:round}
+.walk path.tip{stroke-dasharray:none;stroke-linejoin:round}
+.walk text{fill:var(--gold);font-size:24px}
 </style>
 
 </head>
@@ -236,19 +252,21 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
 
 <main class="wrap inner">
 
-  <section class="sec" aria-label="Festival at a glance">
+  <div class="controls" id="controls">
+    <div class="who-toggle" role="radiogroup" aria-label="Whose day"><button type="button" role="radio" data-who="ed"></button><button type="button" role="radio" data-who="dn"></button></div>
+    <div class="who-toggle" role="radiogroup" aria-label="View"><button type="button" role="radio" data-view="grid">Set times</button><button type="button" role="radio" data-view="list">Day list</button></div>
+  </div>
+
+  <section class="sec" id="secGrid" aria-label="Festival at a glance">
     <div class="sec-head">
       <h2>Festival at a glance</h2>
-      <div class="heads">
-        <div class="who-toggle" role="radiogroup" aria-label="Whose day"><button type="button" role="radio" data-who="ed"></button><button type="button" role="radio" data-who="dn"></button></div>
-        <label class="toggle"><input type="checkbox" id="mineOnly"> Show only picks</label>
-      </div>
+      <label class="toggle"><input type="checkbox" id="mineOnly"> Show only picks</label>
     </div>
     <p class="note">The festival's own set times, updated Nov 11. Tap any set to see its stage on the map.</p>
     <div class="legend">
-      <span><i style="background:var(--amber-soft);border:1px solid var(--amber)"></i>In your day</span>
-      <span><i style="background:transparent;border:1px dashed var(--amber)"></i>Your pick that doesn't fit</span>
-      <span><i style="background:var(--teal)"></i>The part you'll watch</span>
+      <span><i style="background:var(--amber-soft);border:1px solid var(--amber)"></i><b id="legIn">In the day</b></span>
+      <span><i style="background:transparent;border:1px dashed var(--amber)"></i><b id="legSkip">A pick that doesn't fit</b></span>
+      <span><i style="background:var(--teal)"></i><b id="legWatch">The part they'll watch</b></span>
     </div>
     <div class="layout">
       <div class="board" id="board">
@@ -284,18 +302,27 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
           <g class="poi"><circle cx="945" cy="530" r="12" fill="#8a829a"/><text x="968" y="545">ARCADE</text></g>
           <g class="poi" id="poi-merch">
             <circle cx="910" cy="405" r="14" fill="#8fb8ff"/><text x="930" y="400">MERCH</text>
-            <circle cx="125" cy="145" r="14" fill="#8fb8ff"/><text x="145" y="140">MERCH</text>
+            <circle cx="120" cy="215" r="14" fill="#8fb8ff"/><text x="120" y="262" text-anchor="middle">MERCH</text>
           </g>
           <g class="poi" id="poi-food">
-            <circle cx="380" cy="68" r="12" fill="#56d4c4"/>
+            <circle cx="470" cy="58" r="12" fill="#56d4c4"/>
             <circle cx="635" cy="322" r="12" fill="#56d4c4"/>
             <circle cx="845" cy="330" r="12" fill="#56d4c4"/>
             <circle cx="1040" cy="495" r="12" fill="#56d4c4"/>
             <circle cx="780" cy="640" r="12" fill="#56d4c4"/><text x="800" y="648">GA+ LOUNGE</text>
           </g>
-          <g class="stg" id="stg-dk"><circle class="glow" cx="470" cy="150" r="160" fill="url(#g)"/><rect x="355" y="98" width="230" height="100" rx="12"/><text x="470" y="164" text-anchor="middle">DARKER</text></g>
-          <g class="stg" id="stg-wv"><circle class="glow" cx="530" cy="300" r="160" fill="url(#g)"/><rect x="415" y="250" width="230" height="100" rx="12"/><text x="530" y="316" text-anchor="middle">WAVES</text></g>
-          <g class="stg" id="stg-bt"><circle class="glow" cx="735" cy="170" r="160" fill="url(#g)"/><rect x="600" y="120" width="270" height="100" rx="12"/><text x="735" y="186" text-anchor="middle">BLACK TIDE</text></g>
+          <g class="vip">
+            <polygon points="352,176 432,198 300,425 212,366"/>
+            <text x="322" y="300" transform="rotate(-57 322 300)" text-anchor="middle">VIP</text>
+          </g>
+          <g class="walk">
+            <path d="M262,212 L188,334 Q196,428 300,452 L404,330"/>
+            <path class="tip" d="M392,330 L406,326 L404,342"/>
+            <text x="40" y="452">WALK AROUND</text>
+          </g>
+          <g class="stg" id="stg-dk"><circle class="glow" cx="310" cy="120" r="160" fill="url(#g)"/><rect x="200" y="70" width="220" height="100" rx="12"/><text x="310" y="136" text-anchor="middle">DARKER</text></g>
+          <g class="stg" id="stg-wv"><circle class="glow" cx="490" cy="250" r="160" fill="url(#g)"/><rect x="380" y="200" width="220" height="100" rx="12"/><text x="490" y="266" text-anchor="middle">WAVES</text></g>
+          <g class="stg" id="stg-bt"><circle class="glow" cx="705" cy="160" r="160" fill="url(#g)"/><rect x="590" y="110" width="230" height="100" rx="12"/><text x="705" y="176" text-anchor="middle">BLACK TIDE</text></g>
         </svg>
         <div class="legend"><span><i style="background:#56d4c4"></i>Food</span><span><i style="background:#8fb8ff"></i>Merch</span></div>
         <div class="mapbtns"><button type="button" class="btnlink" id="zoomMap">Enlarge map</button><a class="btnlink" href="https://help.darkerwavesfest.com/article/1378-is-there-a-current-map-of-the-festival-grounds" target="_blank" rel="noopener">Official map ↗</a></div>
@@ -303,8 +330,8 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     </div>
   </section>
 
-  <section class="sec" aria-label="My day">
-    <div class="sec-head"><h2 id="dayTitle">My day</h2><div class="heads"><div class="who-toggle" role="radiogroup" aria-label="Whose day"><button type="button" role="radio" data-who="ed"></button><button type="button" role="radio" data-who="dn"></button></div><span class="eyebrow">California time</span></div></div>
+  <section class="sec" id="secList" aria-label="Day list">
+    <div class="sec-head"><h2 id="dayTitle">Day</h2><span class="eyebrow">California time</span></div>
     <div class="myday" id="myday"></div>
   </section>
 
@@ -327,26 +354,26 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     ["bt","I Forget",725,745],["bt","Kim Theory",750,770],["bt","Migs Whiskey",775,795],["bt","The Mainliners",800,825],["bt","Benches",830,860],["bt","Past Self",865,895],["bt","Deceits",900,930],["bt","Christian Death",935,965],["bt","Missing Persons",970,1000],["bt","Mariachi El Bronx",1005,1035],["bt","The Motels",1040,1070],["bt","Prayers",1075,1105],["bt","Marky Ramone",1110,1140],["bt","Buzzcocks",1145,1175]
   ].map(([st,name,s,e,open])=>({st,name,s,e,open:!!open}));
 
-  const WHO={ed:"Me",dn:"D"};
-  const DAYTITLE={ed:"My day",dn:"D's day"};
+  const WHO={ed:"Eddie",dn:"D"};
+  const DAYTITLE={ed:"Eddie's day",dn:"D's day"};
   // The day plan. set = band name when the stop is a set; w = the part he watches.
   const PLAN_ED=[
     {s:690,label:"Head to the beach"},
     {s:720,label:"Walk in",sub:"Gates opened at 11."},
     {s:735,e:795,label:"Merch",k:"merch",sub:"Tent on the main path, just past the Arcade."},
-    {set:"Choir Boy",s:810,e:835,sub:"Then walk next door to Darker."},
+    {set:"Choir Boy",s:810,e:835,sub:"Leave a few minutes early to walk around the VIP section to Darker."},
     {set:"Modern English",s:835,e:850,sub:"The last 15 minutes."},
     {s:850,e:880,label:"Eat",k:"food",sub:"Food stand between Waves and Black Tide."},
-    {set:"TR/ST",s:880,e:910,sub:"The whole set, then over to Darker."},
+    {set:"TR/ST",s:880,e:910,sub:"The whole set, then around the VIP section to Darker."},
     {set:"Cold Cave",s:910,e:925,sub:"The last 15 minutes."},
     {set:"Circle Jerks",s:930,e:965},
-    {set:"Gary Numan",s:970,e:995,sub:"Leave at 4:35 for Soft Cell, next door."},
+    {set:"Gary Numan",s:970,e:995,sub:"Leave about 4:30 to walk around the VIP section to Soft Cell."},
     {set:"Soft Cell",s:995,e:1015,sub:"The first 20 minutes, then over to Black Tide."},
     {set:"Mariachi El Bronx",s:1015,e:1035,sub:"The last 20 minutes."},
     {set:"The Psychedelic Furs",s:1040,e:1080},
     {set:"Bad Religion",s:1085,e:1130},
-    {set:"Simple Minds",s:1130,e:1165,sub:"The second half, next door."},
-    {set:"The Smashing Pumpkins",s:1170,e:1245,sub:"The whole set. Morrissey is the only stage left after, right next door."},
+    {set:"Simple Minds",s:1130,e:1165,sub:"The second half. Darker is around the VIP section from Waves."},
+    {set:"The Smashing Pumpkins",s:1170,e:1245,sub:"The whole set. Then walk around the VIP section to Morrissey."},
     {set:"Morrissey",s:1245,e:1320,sub:"No end time posted. Gates close at 10."},
     {s:1320,label:"Head out"}
   ];
@@ -362,15 +389,15 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     {s:735,e:795,label:"Merch",k:"merch",sub:"Tent on the main path, just past the Arcade."},
     {set:"Modern English",s:820,e:850,sub:"The whole set."},
     {s:850,e:880,label:"Eat",k:"food",sub:"Food stand between Waves and Black Tide."},
-    {set:"TR/ST",s:880,e:910,sub:"The whole set, then over to Darker."},
+    {set:"TR/ST",s:880,e:910,sub:"The whole set, then around the VIP section to Darker."},
     {set:"Cold Cave",s:910,e:925,sub:"The last 15 minutes. It now overlaps TR/ST."},
     {set:"Circle Jerks",s:930,e:965},
-    {set:"Gary Numan",s:970,e:995,sub:"Leave at 4:35 for Soft Cell, next door."},
+    {set:"Gary Numan",s:970,e:995,sub:"Leave about 4:30 to walk around the VIP section to Soft Cell."},
     {set:"Soft Cell",s:995,e:1035,sub:"The whole set."},
     {set:"The Psychedelic Furs",s:1040,e:1080},
     {set:"Bad Religion",s:1085,e:1130},
-    {set:"Simple Minds",s:1130,e:1165,sub:"The second half, next door."},
-    {set:"The Smashing Pumpkins",s:1170,e:1245,sub:"The whole set. Morrissey is right next door after."},
+    {set:"Simple Minds",s:1130,e:1165,sub:"The second half. Darker is around the VIP section from Waves."},
+    {set:"The Smashing Pumpkins",s:1170,e:1245,sub:"The whole set. Then walk around the VIP section to Morrissey."},
     {set:"Morrissey",s:1245,e:1320,sub:"No end time posted. Gates close at 10."},
     {s:1320,label:"Head out"}
   ];
@@ -420,9 +447,9 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     $("pName").textContent=x.name;
     $("pMeta").innerHTML='<span><b>'+STAGE[x.st]+'</b></span><span>'+(x.open?clock(x.s)+", end not posted":clock(x.s)+" to "+clock(x.e))+'</span>';
     const st=$("pStatus");
-    if(p){ st.className="status in"; st.textContent=(p.s===x.s&&p.e===x.e)?"In your day, the whole set.":"In your day, "+clock(p.s)+" to "+clock(p.e)+"."; }
-    else if(PICKS.has(x.name)){ const d=DROPPED.find(r=>r[0].includes(x.name)); st.className="status"; st.textContent="Your pick, but it doesn't fit"+(d?": "+d[1]+".":"."); }
-    else { st.className="status"; st.textContent="Not in your day."; }
+    if(p){ st.className="status in"; st.textContent=(p.s===x.s&&p.e===x.e)?"In "+WHO[who]+"'s day, the whole set.":"In "+WHO[who]+"'s day, "+clock(p.s)+" to "+clock(p.e)+"."; }
+    else if(PICKS.has(x.name)){ const d=DROPPED.find(r=>r[0].includes(x.name)); st.className="status"; st.textContent=WHO[who]+"'s pick, but it doesn't fit"+(d?": "+d[1]+".":"."); }
+    else { st.className="status"; st.textContent="Not in "+WHO[who]+"'s day."; }
     ["dk","wv","bt"].forEach(k=>$("stg-"+k).classList.toggle("on",k===x.st));
     if(!keepClosed) $("panel").classList.add("open");
   }
@@ -441,13 +468,20 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
   }
   function show(k){
     useDay(k); try{localStorage.setItem("dw-who",k);}catch(e){}
-    document.querySelectorAll(".who-toggle button").forEach(b=>{b.textContent=WHO[b.dataset.who];b.setAttribute("aria-checked",String(b.dataset.who===k));});
+    $("legIn").textContent="In "+WHO[k]+"'s day"; $("legSkip").textContent=WHO[k]+"'s pick that doesn't fit"; $("legWatch").textContent="The part "+WHO[k]+" watches";
+    document.querySelectorAll(".who-toggle button[data-who]").forEach(b=>{b.textContent=WHO[b.dataset.who];b.setAttribute("aria-checked",String(b.dataset.who===k));});
     renderSets(); renderDay(); if(typeof tickNow==="function") tickNow();
     if(selected>=0) select(selected,true);
   }
   document.querySelectorAll(".who-toggle").forEach(g=>g.addEventListener("click",e=>{const b=e.target.closest("button[data-who]");if(b&&b.dataset.who!==who) show(b.dataset.who);}));
-  show(who);
-  $("myday").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(b){select(+b.dataset.i); if(window.innerWidth>=920) $("board").scrollIntoView({behavior:"smooth",block:"start"});}});
+  let view="grid"; try{const v=localStorage.getItem("dw-view"); if(v==="grid"||v==="list") view=v;}catch(e){}
+  function setView(v){view=v; try{localStorage.setItem("dw-view",v);}catch(e){}
+    $("secGrid").hidden=v!=="grid"; $("secList").hidden=v!=="list";
+    document.querySelectorAll("button[data-view]").forEach(b=>b.setAttribute("aria-checked",String(b.dataset.view===v)));
+    if(v!=="grid") $("panel").classList.remove("open");}
+  document.querySelectorAll("button[data-view]").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
+  show(who); setView(view);
+  $("myday").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(b){setView("grid");select(+b.dataset.i); if(window.innerWidth>=920) $("secGrid").scrollIntoView({behavior:"smooth",block:"start"});}});
 
 
   /* ---------- enlarge map ---------- */
