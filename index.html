@@ -231,6 +231,10 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
 @keyframes march{to{stroke-dashoffset:-18}}
 @media (prefers-reduced-motion:reduce){.walk path{animation:none}}
 .walk circle{fill:var(--gold)}
+.walk .here-ring{fill:none;stroke:var(--gold);stroke-width:4;transform-box:fill-box;transform-origin:center;animation:here 1.6s ease-out infinite}
+@keyframes here{from{transform:scale(1);opacity:.9}to{transform:scale(3.2);opacity:0}}
+@media (prefers-reduced-motion:reduce){.walk .here-ring{animation:none}}
+.row .poi-btn{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px}
 .route{margin:2px 0 10px;color:var(--gold);font-size:14px}
 .route:empty{display:none}
 .walk path.tip{stroke-dasharray:none;fill:var(--gold);animation:none}
@@ -456,7 +460,8 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
   }
   /* ---------- walk from the band before ---------- */
   const SPOT={dk:[262,212],wv:[425,335],bt:[695,245]};
-  const LEG={"dk>wv":[[262,212],[188,334],[200,412],[300,458],[425,335]],"wv>bt":[[425,335],[600,328],[695,245]]};
+  const LEG={"dk>wv":[[262,212],[188,334],[200,412],[300,458],[425,335]],"wv>bt":[[425,335],[600,328],[695,245]],
+    "mr>wv":[[910,425],[760,372],[600,334],[425,335]],"mr>bt":[[910,425],[790,330],[700,250]],"en>mr":[[1110,740],[1050,640],[975,560],[915,440]]};
   function legPts(a,b){
     if(a===b) return null;
     if(LEG[a+">"+b]) return LEG[a+">"+b].slice();
@@ -468,18 +473,35 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     const prev=k>=0?ps[k-1]:ps.filter(p=>p.s<=x.s).pop();
     return prev?SETS.find(s=>s.name===prev.set):null;
   }
+  function standAt(st){
+    const [x,y]=SPOT[st];
+    $("walk").innerHTML='<circle class="here-ring" cx="'+x+'" cy="'+y+'" r="16"/><circle cx="'+x+'" cy="'+y+'" r="11"/><path class="tip" d="M'+x+','+(y-20)+' L'+(x-14)+','+(y-46)+' L'+(x+14)+','+(y-46)+' Z"/>';
+  }
   function drawRoute(x){
     const g=$("walk"), r=$("pRoute"), from=prevFor(x);
     g.innerHTML=""; r.textContent="";
-    if(!from){ r.textContent="First band of the day."; return; }
-    if(from.st===x.st){ r.textContent="Same stage as "+from.name+". Stay put."; return; }
-    const pts=legPts(from.st,x.st), [ax,ay]=pts[pts.length-2], [bx,by]=pts[pts.length-1];
+    if(!from){ drawPts(legPts("mr",x.st)); r.textContent="From the merch tent. Walk over."; return; }
+    if(from.st===x.st){ standAt(x.st); r.textContent="Same stage as "+from.name+". Stay put."; return; }
+    drawPts(legPts(from.st,x.st));
+    const around=(from.st==="dk")!==(x.st==="dk");
+    r.textContent="From "+from.name+" at "+STAGE[from.st]+". "+(around?"Walk around the VIP section.":"Quick walk over.");
+  }
+  function drawPts(pts){
+    const g=$("walk"), [ax,ay]=pts[pts.length-2], [bx,by]=pts[pts.length-1];
     const t=Math.atan2(by-ay,bx-ax), L=26, W=15, back=[bx-L*Math.cos(t),by-L*Math.sin(t)];
     const tip=[[bx,by],[back[0]+W*Math.sin(t),back[1]-W*Math.cos(t)],[back[0]-W*Math.sin(t),back[1]+W*Math.cos(t)]];
     const line=pts.slice(0,-1).concat([back]);
     g.innerHTML='<circle cx="'+pts[0][0]+'" cy="'+pts[0][1]+'" r="9"/><path d="M'+line.map(q=>q.join(",")).join(" L")+'"/><path class="tip" d="M'+tip.map(q=>q.map(n=>n.toFixed(1)).join(",")).join(" L")+' Z"/>';
-    const around=(from.st==="dk")!==(x.st==="dk");
-    r.textContent="From "+from.name+" at "+STAGE[from.st]+". "+(around?"Walk around the VIP section.":"Quick walk over.");
+  }
+  function showMerch(){
+    selected=-1;
+    document.querySelectorAll(".set.sel").forEach(b=>b.classList.remove("sel"));
+    $("pName").textContent="Entry and merch";
+    $("pMeta").innerHTML='<span><b>Main entrance</b></span><span>Merch tent just past the Arcade</span>';
+    const st=$("pStatus"); st.className="status"; st.textContent="";
+    ["dk","wv","bt"].forEach(k=>$("stg-"+k).classList.remove("on"));
+    drawPts(legPts("en","mr")); $("pRoute").textContent="Straight up the main path from the gate.";
+    $("panel").classList.add("open");
   }
   $("closePanel").addEventListener("click",()=>$("panel").classList.remove("open"));
 
@@ -490,6 +512,7 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     const t=p.e?short(p.s)+" to "+short(p.e):clock(p.s);
     let w;
     if(p.set){ const i=SETS.findIndex(x=>x.name===p.set); w='<button type="button" data-i="'+i+'">'+esc(p.set)+'</button> <span style="color:var(--muted);font-weight:400">· '+STAGE[SETS[i].st]+'</span>'; }
+    else if(p.k==="merch") w='<button type="button" class="poi-btn" data-poi="merch">'+esc(p.label)+'</button>';
     else w=esc(p.label);
     return '<div class="row'+(p.k?" k-"+p.k:"")+'" data-s="'+p.s+'" data-e="'+(p.e||p.s+15)+'"><span class="t">'+t+'</span><span class="w">'+w+(p.sub?'<span class="s">'+esc(p.sub)+'</span>':'')+'</span></div>';
   }).join("");
@@ -509,7 +532,7 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     if(v!=="grid") $("panel").classList.remove("open");}
   document.querySelectorAll("button[data-view]").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
   show(who); setView(view);
-  $("myday").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(b){setView("grid");select(+b.dataset.i); if(window.innerWidth>=920) $("secGrid").scrollIntoView({behavior:"smooth",block:"start"});}});
+  $("myday").addEventListener("click",e=>{const m=e.target.closest("button[data-poi]");if(m){setView("grid");showMerch();if(window.innerWidth>=920) $("secGrid").scrollIntoView({behavior:"smooth",block:"start"});return;}const b=e.target.closest("button[data-i]");if(b){setView("grid");select(+b.dataset.i); if(window.innerWidth>=920) $("secGrid").scrollIntoView({behavior:"smooth",block:"start"});}});
 
 
   /* ---------- enlarge map ---------- */
