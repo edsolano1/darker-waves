@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Darker Waves Day Plan</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Darker Waves day plan: countdown, official set times as a tap grid with a stage map, the day in order, merch and food. */
+:root{
+  color-scheme:dark;
+  --bg:#0b0a12; --bg2:#13111c; --panel:#18151f; --ink:#ece8f2; --muted:#a199b0; --line:#2b2637;
+  --amber:#ff7a95; --amber-soft:rgba(255,122,149,.14); --amber-ink:#1b070d;
+  --teal:#56d4c4; --waves:#8fb8ff; --violet:#7a5cd6; --violet-dim:#2a2142; --violet-line:#4a3a78;
+  --f-display:"Big Shoulders Display","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --ppm:2.4px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+a{color:var(--amber)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+#waves{position:fixed;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0}
+.hero,.wrap{position:relative;z-index:1}
+.hero{border-bottom:1px solid var(--line);background:radial-gradient(120% 90% at 80% 0%, rgba(60,30,58,.7) 0%, rgba(11,10,18,0) 60%)}
+.inner{max-width:1120px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.hero .inner{padding-block:36px 32px;display:grid;gap:20px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.eyebrow b{color:var(--amber);font-weight:500}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(52px,10vw,104px);line-height:.9;margin:0;letter-spacing:.01em;text-transform:uppercase}
+h1 span{color:var(--amber)}
+.links{display:flex;flex-wrap:wrap;gap:10px}
+.btnlink{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;border-radius:6px;padding:8px 14px;border:1px solid var(--amber);color:var(--amber);background:rgba(24,21,31,.8)}
+.btnlink.solid{background:var(--amber);color:var(--amber-ink)}
+.count{display:grid;gap:8px}
+.count-label{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.digits{display:flex;flex-wrap:wrap;gap:10px}
+.cell{background:rgba(24,21,31,.85);border:1px solid var(--line);border-radius:8px;padding:10px 14px 8px;min-width:80px;display:grid;justify-items:center;gap:2px}
+.cell .n{font-family:var(--f-mono);font-size:clamp(28px,6vw,46px);font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+.cell .u{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+.wrap{padding-block:28px 64px;display:grid;gap:36px}
+h2{font-family:var(--f-display);font-weight:700;font-size:28px;margin:0;letter-spacing:.04em;text-transform:uppercase}
+.sec{display:grid;gap:14px;min-width:0}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 12px}
+.note{color:var(--muted);font-size:14px;margin:0;max-width:75ch}
+
+/* drives */
+.drives{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.drive{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:12px}
+.drive .route{font-family:var(--f-display);font-weight:800;font-size:28px;text-transform:uppercase;letter-spacing:.03em;line-height:1}
+.drive .route span{color:var(--amber)}
+.drive .day{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.drive dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px}
+.drive dt{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.drive dd{margin:0;font-weight:600}
+.drive dd small{font-weight:400;color:var(--muted)}
+
+/* schedule grid */
+.layout{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:920px){.layout{grid-template-columns:minmax(0,1fr) 340px;align-items:start}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+.toggle{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--ink);cursor:pointer}
+.toggle input{width:16px;height:16px;accent-color:var(--amber)}
+.board{background:rgba(19,17,28,.92);border:1px solid var(--line);border-radius:12px;padding:12px 10px 14px;min-width:0}
+.cols{display:grid;grid-template-columns:34px repeat(3,minmax(0,1fr));gap:6px}
+.colhead{font-family:var(--f-display);font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:7px 4px;border-radius:6px;border:1px solid var(--violet-line);background:linear-gradient(180deg,#3a2c66,#241c40);line-height:1.05}
+.colhead.wv{background:linear-gradient(180deg,#3b4f8f,#25305e);border-color:#5770b8}
+.colhead.bt{background:linear-gradient(180deg,#2c2244,#1b1530)}
+.colhead small{display:block;font-family:var(--f-mono);font-weight:400;font-size:10px;letter-spacing:.08em;color:var(--muted)}
+.lane{position:relative;height:calc(var(--span) * var(--ppm))}
+.hours{position:relative}
+.hr{position:absolute;left:0;right:0;font-family:var(--f-mono);font-size:10.5px;color:var(--muted);transform:translateY(-50%)}
+.gridline{position:absolute;left:0;right:0;border-top:1px solid rgba(122,92,214,.22)}
+.set{position:absolute;left:0;right:0;border-radius:6px;border:1px solid var(--violet-line);background:var(--violet-dim);color:var(--ink);text-align:center;padding:2px 4px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;cursor:pointer;font:inherit;overflow:hidden;line-height:1.1}
+.set .nm{font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.03em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.set .tm{font-family:var(--f-mono);font-size:10px;color:var(--muted);white-space:nowrap}
+.set.wv{background:#22294a;border-color:#3d4f8a}
+.set.bt{background:#1a1528}
+.set.plan{background:var(--amber-soft);border-color:var(--amber)}
+.set.plan .nm{color:var(--amber)}
+.set.skip{border-style:dashed;border-color:var(--amber)}
+.set.sel{box-shadow:0 0 0 2px var(--teal),0 0 14px rgba(86,212,196,.5)}
+.set:hover{filter:brightness(1.25)}
+.board.mine .set:not(.plan):not(.skip){opacity:.28}
+.watch{position:absolute;left:-1px;width:3px;background:var(--teal);border-radius:2px}
+.nowline{position:absolute;left:0;right:0;border-top:2px solid var(--teal);box-shadow:0 0 8px var(--teal);z-index:2}
+@media (max-width:520px){.set .nm{font-size:11px}.set .tm{font-size:9px}.colhead{font-size:13px}.cols{grid-template-columns:28px repeat(3,minmax(0,1fr));gap:4px}}
+
+/* detail panel */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:12px;min-width:0}
+@media (min-width:920px){.panel{position:sticky;top:16px}}
+.panel .who{font-family:var(--f-display);font-weight:800;font-size:30px;text-transform:uppercase;line-height:1;margin:0}
+.panel .meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.panel .meta b{color:var(--ink);font-weight:500}
+.panel .status{font-size:14px;margin:0}
+.panel .status.in{color:var(--amber)}
+.close{display:none}
+@media (max-width:919px){
+  .panel{position:fixed;left:8px;right:8px;bottom:8px;z-index:20;max-height:72vh;overflow:auto;box-shadow:0 -10px 40px rgba(0,0,0,.6);transform:translateY(110%);transition:transform .25s ease}
+  .panel.open{transform:none}
+  .close{display:inline-flex;justify-self:end;font:inherit;font-size:13px;background:var(--bg2);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer}
+}
+.mapsvg{width:100%;height:auto;display:block;border-radius:8px;background:#141024;border:1px solid var(--line)}
+.mapsvg text{font-family:var(--f-display);font-weight:700;letter-spacing:.04em}
+.stg rect{fill:#2a2142;stroke:#4a3a78;stroke-width:2}
+.stg text{fill:#c9bff0;font-size:30px}
+.stg.on rect{fill:var(--amber);stroke:#fff}
+.stg.on text{fill:var(--amber-ink)}
+.stg.on .glow{opacity:1}
+.glow{opacity:0;transition:opacity .2s}
+.poi circle{stroke:#0b0a12;stroke-width:3}
+.poi text{fill:var(--ink);font-size:24px}
+
+/* my day */
+.myday{display:grid;gap:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.row{display:grid;grid-template-columns:108px minmax(0,1fr);gap:4px 14px;padding:11px 14px;border-top:1px solid var(--line);align-items:baseline}
+.row:first-child{border-top:0}
+.row .t{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.row .w{font-weight:600}
+.row .w button{all:unset;cursor:pointer;color:var(--amber);font-weight:600;text-decoration:underline;text-decoration-color:rgba(255,122,149,.4);text-underline-offset:3px}
+.row .w button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.row .s{display:block;font-weight:400;color:var(--muted);font-size:13.5px}
+.row.k-food .w{color:var(--teal)}
+.row.k-merch .w{color:var(--waves)}
+.row.now{background:rgba(86,212,196,.08);box-shadow:inset 3px 0 0 var(--teal)}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+.dropped{font-size:14px;color:var(--muted);margin:0}
+.dropped b{color:var(--ink);font-weight:600}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px;align-content:start}
+.card h3{font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:.05em;text-transform:uppercase;margin:0}
+.card ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.card p{margin:0}
+.tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.foot{color:var(--muted);font-size:13px;max-width:85ch;margin:0}
+@media (prefers-reduced-motion: reduce){.panel{transition:none}}
+</style>
+
+</head>
+<body>
+<canvas id="waves" aria-hidden="true"></canvas>
+<header class="hero">
+  <div class="inner">
+    <span class="eyebrow">Huntington City Beach · <b>Saturday, Nov 14</b></span>
+    <h1>Darker <span>Waves</span></h1>
+    <div class="links">
+      <a class="btnlink solid" href="https://www.darkerwavesfest.com/schedule" target="_blank" rel="noopener">Official schedule ↗</a>
+      <a class="btnlink" href="https://help.darkerwavesfest.com/article/1378-is-there-a-current-map-of-the-festival-grounds" target="_blank" rel="noopener">Official map ↗</a>
+    </div>
+    <div class="count" aria-live="polite">
+      <span class="count-label" id="countLabel">Gates open in</span>
+      <div class="digits" id="digits"></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap inner">
+
+  <section class="sec" aria-label="Festival at a glance">
+    <div class="sec-head">
+      <h2>Festival at a glance</h2>
+      <label class="toggle"><input type="checkbox" id="mineOnly"> Show only my picks</label>
+    </div>
+    <p class="note">The festival's own set times, updated Nov 11. Tap any set to see its stage on the map.</p>
+    <div class="legend">
+      <span><i style="background:var(--amber-soft);border:1px solid var(--amber)"></i>In your day</span>
+      <span><i style="background:transparent;border:1px dashed var(--amber)"></i>Your pick that doesn't fit</span>
+      <span><i style="background:var(--teal)"></i>The part you'll watch</span>
+    </div>
+    <div class="layout">
+      <div class="board" id="board">
+        <div class="cols" aria-hidden="false">
+          <div></div>
+          <div class="colhead dk">Darker<small>stage</small></div>
+          <div class="colhead wv">Waves<small>stage</small></div>
+          <div class="colhead bt">Black Tide<small>stage</small></div>
+        </div>
+        <div class="cols" style="margin-top:8px">
+          <div class="lane hours" id="hours"></div>
+          <div class="lane" id="lane-dk"></div>
+          <div class="lane" id="lane-wv"></div>
+          <div class="lane" id="lane-bt"></div>
+        </div>
+      </div>
+      <aside class="panel" id="panel" aria-live="polite">
+        <button type="button" class="close" id="closePanel">Close</button>
+        <h3 class="who" id="pName">Tap a set</h3>
+        <div class="meta" id="pMeta"><span>Pick any band on the grid to see where it plays.</span></div>
+        <p class="status" id="pStatus"></p>
+        <svg class="mapsvg" id="map" viewBox="0 0 1220 800" role="img" aria-label="Festival grounds with the stage highlighted">
+          <defs>
+            <radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff7a95" stop-opacity=".55"/><stop offset="1" stop-color="#ff7a95" stop-opacity="0"/></radialGradient>
+          </defs>
+          <path d="M0,330 L520,800 L0,800 Z" fill="#5e4a8f" opacity=".35"/>
+          <path d="M0,170 L700,800 L520,800 L0,330 Z" fill="#c9a85a" opacity=".22"/>
+          <path d="M120,0 L1220,0 L1220,700 L1150,800 L700,800 L0,170 L0,0 Z" fill="#231b3d"/>
+          <path d="M760,0 L1220,520 L1220,600 L700,0 Z" fill="#1a1530"/>
+          <text x="900" y="215" transform="rotate(41 900 215)" fill="#6d5fa0" font-size="26">PACIFIC COAST HWY</text>
+          <text x="60" y="760" fill="#8f86b8" font-size="26">OCEAN</text>
+          <g class="poi" id="poi-entry"><circle cx="1110" cy="740" r="16" fill="#ece8f2"/><text x="980" y="700">MAIN ENTRANCE</text></g>
+          <g class="poi"><circle cx="945" cy="530" r="12" fill="#8a829a"/><text x="965" y="538">ARCADE</text></g>
+          <g class="poi" id="poi-merch">
+            <circle cx="910" cy="405" r="14" fill="#8fb8ff"/><text x="930" y="400">MERCH</text>
+            <circle cx="125" cy="145" r="14" fill="#8fb8ff"/><text x="145" y="140">MERCH</text>
+          </g>
+          <g class="poi" id="poi-food">
+            <circle cx="380" cy="68" r="12" fill="#56d4c4"/>
+            <circle cx="635" cy="322" r="12" fill="#56d4c4"/>
+            <circle cx="845" cy="330" r="12" fill="#56d4c4"/>
+            <circle cx="1040" cy="495" r="12" fill="#56d4c4"/>
+            <circle cx="780" cy="640" r="12" fill="#56d4c4"/><text x="800" y="648">GA+ LOUNGE</text>
+          </g>
+          <g class="stg" id="stg-dk"><circle class="glow" cx="470" cy="150" r="140" fill="url(#g)"/><rect x="380" y="110" width="180" height="80" rx="10"/><text x="470" y="160" text-anchor="middle">DARKER</text></g>
+          <g class="stg" id="stg-wv"><circle class="glow" cx="530" cy="290" r="140" fill="url(#g)"/><rect x="440" y="250" width="180" height="80" rx="10"/><text x="530" y="300" text-anchor="middle">WAVES</text></g>
+          <g class="stg" id="stg-bt"><circle class="glow" cx="700" cy="170" r="140" fill="url(#g)"/><rect x="605" y="130" width="190" height="80" rx="10"/><text x="700" y="180" text-anchor="middle">BLACK TIDE</text></g>
+        </svg>
+        <div class="legend"><span><i style="background:#56d4c4"></i>Food</span><span><i style="background:#8fb8ff"></i>Merch</span></div>
+        <a class="btnlink" href="https://help.darkerwavesfest.com/article/1378-is-there-a-current-map-of-the-festival-grounds" target="_blank" rel="noopener">Open the official map ↗</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="sec" aria-label="My day">
+    <div class="sec-head"><h2>My day</h2><span class="eyebrow">California time</span></div>
+    <div class="myday" id="myday"></div>
+    <p class="dropped" id="dropped"></p>
+  </section>
+
+  <section class="sec" aria-label="Merch and food">
+    <div class="sec-head"><h2>Merch and food</h2></div>
+    <div class="cards">
+      <article class="card">
+        <h3>Merch</h3>
+        <span class="tag">12:15 to 1:15 PM</span>
+        <p>Go first thing, while lines are short and sizes are in stock. The closest tent is on the main path from the entrance, just past the Arcade. A second one sits on the beach side, west of the VIP lounge.</p>
+        <p class="note">Clear bags only, so a locker is worth it if you buy more than a shirt.</p>
+      </article>
+      <article class="card">
+        <h3>Food</h3>
+        <span class="tag">2:10 to 2:40 PM</span>
+        <p>The festival hasn't posted its food vendors on the site or the map yet. The map shows food at five spots. The one between Waves and Black Tide is closest to your sets.</p>
+        <ul>
+          <li>Go for a plate with beans, tofu or a veggie patty for the protein.</li>
+          <li>Skip anything with olives.</li>
+          <li>The festival is cashless, so bring a card or phone.</li>
+          <li>No outside food. An empty plastic bottle is fine for the water stations.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <p class="foot">Set times and the map come from the festival's own <a href="https://www.darkerwavesfest.com/schedule" target="_blank" rel="noopener">schedule</a> and <a href="https://help.darkerwavesfest.com/article/1378-is-there-a-current-map-of-the-festival-grounds" target="_blank" rel="noopener">help center</a>, both updated Nov 11. The festival says times can change, so give the schedule one last look Saturday morning. Gates open 11 AM and close 10 PM. No re-entry. The small map here is a sketch of theirs. Fan made, not affiliated with the festival.</p>
+</main>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const clock=m=>{let h=Math.floor(m/60),mm=m%60;const ap=h>=12?"PM":"AM";h=h%12||12;return h+":"+String(mm).padStart(2,"0")+" "+ap;};
+  const short=m=>{let h=Math.floor(m/60)%12||12;return h+":"+String(m%60).padStart(2,"0");};
+  const STAGE={dk:"Darker stage",wv:"Waves stage",bt:"Black Tide stage"};
+
+  // Official schedule, Nov 11 version. Minutes after midnight, California time.
+  const SETS=[
+    ["dk","All The Damn Vampires",755,780],["dk","RIKI",785,815],["dk","Modern English",820,850],["dk","Gene",855,885],["dk","Cold Cave",890,925],["dk","Circle Jerks",930,965],["dk","Gary Numan",970,1010],["dk","Manic Street Preachers",1015,1055],["dk","Adam Ant",1060,1105],["dk","Simple Minds",1110,1170],["dk","Morrissey",1245,1320,true],
+    ["wv","Casket Cassette",745,770],["wv","Purest Form",775,800],["wv","Choir Boy",810,840],["wv","Warfield",845,875],["wv","TR/ST",880,910],["wv","EMF",915,950],["wv","Silversun Pickups",955,990],["wv","Soft Cell",995,1035],["wv","The Psychedelic Furs",1040,1080],["wv","Bad Religion",1085,1130],["wv","The Smashing Pumpkins",1170,1245],
+    ["bt","I Forget",725,745],["bt","Kim Theory",750,770],["bt","Migs Whiskey",775,795],["bt","The Mainliners",800,825],["bt","Benches",830,860],["bt","Past Self",865,895],["bt","Deceits",900,930],["bt","Christian Death",935,965],["bt","Missing Persons",970,1000],["bt","Mariachi El Bronx",1005,1035],["bt","The Motels",1040,1070],["bt","Prayers",1075,1105],["bt","Marky Ramone",1110,1140],["bt","Buzzcocks",1145,1175]
+  ].map(([st,name,s,e,open])=>({st,name,s,e,open:!!open}));
+
+  // The day plan. set = band name when the stop is a set; w = the part he watches.
+  const PLAN=[
+    {s:690,label:"Head to the beach"},
+    {s:720,label:"Walk in",sub:"Gates opened at 11."},
+    {s:735,e:795,label:"Merch",k:"merch",sub:"Tent on the main path, just past the Arcade."},
+    {set:"Choir Boy",s:810,e:835,sub:"Then walk next door to Darker."},
+    {set:"Modern English",s:835,e:850,sub:"The last 15 minutes."},
+    {s:850,e:880,label:"Eat",k:"food",sub:"Food stand between Waves and Black Tide."},
+    {set:"TR/ST",s:880,e:910,sub:"The whole set, then over to Darker."},
+    {set:"Cold Cave",s:910,e:925,sub:"The last 15 minutes."},
+    {set:"Circle Jerks",s:930,e:965},
+    {set:"Gary Numan",s:970,e:995,sub:"Leave at 4:35 for Soft Cell, next door."},
+    {set:"Soft Cell",s:995,e:1015,sub:"The first 20 minutes, then over to Black Tide."},
+    {set:"Mariachi El Bronx",s:1015,e:1035,sub:"The last 20 minutes."},
+    {set:"The Psychedelic Furs",s:1040,e:1080},
+    {set:"Bad Religion",s:1085,e:1130},
+    {set:"Simple Minds",s:1130,e:1165,sub:"The second half, next door."},
+    {set:"The Smashing Pumpkins",s:1170,e:1245,sub:"The whole set. Morrissey is the only stage left after, right next door."},
+    {set:"Morrissey",s:1245,e:1320,sub:"No end time posted. Gates close at 10."},
+    {s:1320,label:"Head out"}
+  ];
+  const DROPPED=[
+    ["The Damned","not on the Nov 11 schedule or the lineup poster anymore"],
+    ["Prayers, Marky Ramone and Buzzcocks","Black Tide, during Furs, Bad Religion and Simple Minds"]
+  ];
+  const PICKS=new Set(["Bad Religion","Circle Jerks","Cold Cave","Gary Numan","Mariachi El Bronx","Morrissey","The Smashing Pumpkins","Soft Cell","TR/ST","Choir Boy","Modern English","The Psychedelic Furs","Simple Minds","Prayers","Marky Ramone","Buzzcocks"]);
+  const planBy=Object.fromEntries(PLAN.filter(p=>p.set).map(p=>[p.set,p]));
+
+  /* ---------- grid ---------- */
+  const START=720,END=1320,SPAN=END-START;
+  document.documentElement.style.setProperty("--span",SPAN);
+  const ppm=()=>parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--ppm"))||2.4;
+  const hours=$("hours");
+  for(let m=START;m<=END;m+=60){
+    const top="calc("+(m-START)+" * var(--ppm))";
+    hours.insertAdjacentHTML("beforeend",'<span class="hr" style="top:'+top+'">'+(Math.floor(m/60)%12||12)+(m<720?"a":"p")+'</span>');
+    ["dk","wv","bt"].forEach(st=>$("lane-"+st).insertAdjacentHTML("beforeend",'<div class="gridline" style="top:'+top+'"></div>'));
+  }
+  SETS.forEach((x,i)=>{
+    const p=planBy[x.name];
+    const cls="set "+x.st+(p?" plan":(PICKS.has(x.name)?" skip":""));
+    const top="calc("+(x.s-START)+" * var(--ppm))", h="calc("+(x.e-x.s)+" * var(--ppm) - 3px)";
+    const time=x.open?short(x.s):short(x.s)+" to "+short(x.e);
+    let watch="";
+    if(p&&(p.s!==x.s||p.e!==x.e)) watch='<span class="watch" style="top:calc('+(p.s-x.s)+' * var(--ppm));height:calc('+(p.e-p.s)+' * var(--ppm) - 3px)"></span>';
+    $("lane-"+x.st).insertAdjacentHTML("beforeend",'<button type="button" class="'+cls+'" data-i="'+i+'" style="top:'+top+';height:'+h+'" aria-label="'+esc(x.name+", "+STAGE[x.st]+", "+time)+'"><span class="nm">'+esc(x.name)+'</span><span class="tm">'+time+'</span>'+watch+'</button>');
+  });
+  $("board").addEventListener("click",e=>{const b=e.target.closest(".set");if(b) select(+b.dataset.i);});
+  $("mineOnly").addEventListener("change",e=>$("board").classList.toggle("mine",e.target.checked));
+
+  function select(i){
+    const x=SETS[i],p=planBy[x.name];
+    document.querySelectorAll(".set.sel").forEach(b=>b.classList.remove("sel"));
+    const btn=document.querySelector('.set[data-i="'+i+'"]'); if(btn) btn.classList.add("sel");
+    $("pName").textContent=x.name;
+    $("pMeta").innerHTML='<span><b>'+STAGE[x.st]+'</b></span><span>'+(x.open?clock(x.s)+", end not posted":clock(x.s)+" to "+clock(x.e))+'</span>';
+    const st=$("pStatus");
+    if(p){ st.className="status in"; st.textContent=(p.s===x.s&&p.e===x.e)?"In your day, the whole set.":"In your day, "+clock(p.s)+" to "+clock(p.e)+"."; }
+    else if(PICKS.has(x.name)){ const d=DROPPED.find(r=>r[0].includes(x.name)); st.className="status"; st.textContent="Your pick, but it doesn't fit"+(d?": "+d[1]+".":"."); }
+    else { st.className="status"; st.textContent="Not in your day."; }
+    ["dk","wv","bt"].forEach(k=>$("stg-"+k).classList.toggle("on",k===x.st));
+    $("panel").classList.add("open");
+  }
+  $("closePanel").addEventListener("click",()=>$("panel").classList.remove("open"));
+
+  /* ---------- my day ---------- */
+  $("myday").innerHTML=PLAN.map(p=>{
+    const t=p.e?short(p.s)+" to "+short(p.e):clock(p.s);
+    let w;
+    if(p.set){ const i=SETS.findIndex(x=>x.name===p.set); w='<button type="button" data-i="'+i+'">'+esc(p.set)+'</button> <span style="color:var(--muted);font-weight:400">· '+STAGE[SETS[i].st]+'</span>'; }
+    else w=esc(p.label);
+    return '<div class="row'+(p.k?" k-"+p.k:"")+'" data-s="'+p.s+'" data-e="'+(p.e||p.s+15)+'"><span class="t">'+t+'</span><span class="w">'+w+(p.sub?'<span class="s">'+esc(p.sub)+'</span>':'')+'</span></div>';
+  }).join("");
+  $("myday").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(b){select(+b.dataset.i); if(window.innerWidth>=920) $("board").scrollIntoView({behavior:"smooth",block:"start"});}});
+  $("dropped").innerHTML="<b>Not in your day:</b> "+DROPPED.map(r=>esc(r[0])+" ("+esc(r[1])+")").join(". ")+".";
+
+  /* ---------- now marker on the day ---------- */
+  const GATES=Date.UTC(2026,10,14,19,0); // 11 AM PST
+  function caMinutes(){const f=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date());const g=k=>f.find(x=>x.type===k).value;return {day:g("year")+"-"+g("month")+"-"+g("day"),m:+g("hour")*60+ +g("minute")};}
+  function tickNow(){
+    const n=caMinutes(); const on=n.day==="2026-11-14";
+    document.querySelectorAll(".row").forEach(r=>r.classList.toggle("now",on&&n.m>=+r.dataset.s&&n.m<+r.dataset.e));
+    document.querySelectorAll(".nowline").forEach(x=>x.remove());
+    if(on&&n.m>=START&&n.m<=END) ["dk","wv","bt"].forEach(st=>$("lane-"+st).insertAdjacentHTML("beforeend",'<div class="nowline" style="top:calc('+(n.m-START)+' * var(--ppm))"></div>'));
+  }
+
+  /* ---------- countdown ---------- */
+  function tick(){
+    const left=GATES-Date.now(), box=$("digits");
+    if(left<=0){ $("countLabel").textContent=Date.now()<GATES+11*3600e3?"Gates are open":"That's a wrap"; box.innerHTML=""; return; }
+    const d=Math.floor(left/864e5),h=Math.floor(left/36e5)%24,m=Math.floor(left/6e4)%60,s=Math.floor(left/1e3)%60;
+    const parts=[[d,"days"],[h,"hrs"],[m,"min"],[s,"sec"]];
+    if(box.children.length!==4) box.innerHTML=parts.map(()=>'<div class="cell"><span class="n"></span><span class="u"></span></div>').join("");
+    parts.forEach(([n,u],i)=>{const c=box.children[i];c.firstChild.textContent=String(n).padStart(2,"0");c.lastChild.textContent=u;});
+  }
+  tick(); tickNow(); setInterval(tick,1000); setInterval(tickNow,30000);
+
+  /* ---------- drifting waves ---------- */
+  const cv=$("waves"),ctx=cv.getContext("2d");let W=0,H=0;
+  const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const LINES=[{y:.62,a:14,k:.006,sp:.00025,c:"rgba(255,122,149,.16)"},{y:.70,a:18,k:.0045,sp:.00018,c:"rgba(143,184,255,.12)"},{y:.78,a:12,k:.008,sp:.0003,c:"rgba(86,212,196,.10)"},{y:.86,a:22,k:.0035,sp:.00015,c:"rgba(255,122,149,.09)"}];
+  function size(){const r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
+  function draw(ts){ctx.clearRect(0,0,W,H);const t=ts||0;
+    LINES.forEach(L=>{ctx.beginPath();for(let x=0;x<=W;x+=8){const y=L.y*H+Math.sin(x*L.k+t*L.sp*6)*L.a+Math.sin(x*L.k*2.3-t*L.sp*4)*L.a*.35; x?ctx.lineTo(x,y):ctx.moveTo(x,y);} ctx.strokeStyle=L.c;ctx.lineWidth=1.5;ctx.stroke();});
+    if(!reduce) requestAnimationFrame(draw);}
+  size();draw(0);window.addEventListener("resize",()=>{size();if(reduce)draw(0);});
+})();
+</script>
+</body>
+</html>
