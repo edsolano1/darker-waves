@@ -207,6 +207,13 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
 .mapzoom svg{width:100%;height:100%;max-height:100%;cursor:zoom-out;background:#141024;border:1px solid #33224f;border-radius:10px}
 .mapzoom .zclose{align-self:flex-end;font:inherit;font-size:15px;background:#1b1230;color:#f3ecff;border:1px solid #4a3a78;border-radius:8px;padding:8px 16px;cursor:pointer}
 @media (max-width:700px) and (orientation:portrait){.mapzoom .zwrap{place-items:start}.mapzoom svg{width:auto;height:auto;min-width:170vw}}
+
+/* whose day toggle */
+.heads{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.who-toggle{display:inline-flex;padding:3px;border-radius:999px;background:rgba(18,10,31,.8);border:1px solid #4a3a78;box-shadow:0 0 14px rgba(155,107,255,.2)}
+.who-toggle button{font:inherit;font-size:14px;font-weight:600;color:#cfc3f0;background:transparent;border:0;border-radius:999px;padding:7px 16px;cursor:pointer;min-height:36px}
+.who-toggle button[aria-checked="true"]{background:linear-gradient(135deg,#ff4fa3,#9b6bff);color:#fff;box-shadow:0 0 16px rgba(255,79,163,.45)}
+.who-toggle button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 </style>
 
 </head>
@@ -232,7 +239,10 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
   <section class="sec" aria-label="Festival at a glance">
     <div class="sec-head">
       <h2>Festival at a glance</h2>
-      <label class="toggle"><input type="checkbox" id="mineOnly"> Show only my picks</label>
+      <div class="heads">
+        <div class="who-toggle" role="radiogroup" aria-label="Whose day"><button type="button" role="radio" data-who="ed"></button><button type="button" role="radio" data-who="dn"></button></div>
+        <label class="toggle"><input type="checkbox" id="mineOnly"> Show only picks</label>
+      </div>
     </div>
     <p class="note">The festival's own set times, updated Nov 11. Tap any set to see its stage on the map.</p>
     <div class="legend">
@@ -294,7 +304,7 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
   </section>
 
   <section class="sec" aria-label="My day">
-    <div class="sec-head"><h2>My day</h2><span class="eyebrow">California time</span></div>
+    <div class="sec-head"><h2 id="dayTitle">My day</h2><div class="heads"><div class="who-toggle" role="radiogroup" aria-label="Whose day"><button type="button" role="radio" data-who="ed"></button><button type="button" role="radio" data-who="dn"></button></div><span class="eyebrow">California time</span></div></div>
     <div class="myday" id="myday"></div>
   </section>
 
@@ -317,8 +327,10 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     ["bt","I Forget",725,745],["bt","Kim Theory",750,770],["bt","Migs Whiskey",775,795],["bt","The Mainliners",800,825],["bt","Benches",830,860],["bt","Past Self",865,895],["bt","Deceits",900,930],["bt","Christian Death",935,965],["bt","Missing Persons",970,1000],["bt","Mariachi El Bronx",1005,1035],["bt","The Motels",1040,1070],["bt","Prayers",1075,1105],["bt","Marky Ramone",1110,1140],["bt","Buzzcocks",1145,1175]
   ].map(([st,name,s,e,open])=>({st,name,s,e,open:!!open}));
 
+  const WHO={ed:"Me",dn:"D"};
+  const DAYTITLE={ed:"My day",dn:"D's day"};
   // The day plan. set = band name when the stop is a set; w = the part he watches.
-  const PLAN=[
+  const PLAN_ED=[
     {s:690,label:"Head to the beach"},
     {s:720,label:"Walk in",sub:"Gates opened at 11."},
     {s:735,e:795,label:"Merch",k:"merch",sub:"Tent on the main path, just past the Arcade."},
@@ -338,12 +350,42 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     {set:"Morrissey",s:1245,e:1320,sub:"No end time posted. Gates close at 10."},
     {s:1320,label:"Head out"}
   ];
-  const DROPPED=[
+  const DROPPED_ED=[
     ["The Damned","not on the Nov 11 schedule or the lineup poster anymore"],
     ["Prayers, Marky Ramone and Buzzcocks","Black Tide, during Furs, Bad Religion and Simple Minds"]
   ];
-  const PICKS=new Set(["Bad Religion","Circle Jerks","Cold Cave","Gary Numan","Mariachi El Bronx","Morrissey","The Smashing Pumpkins","Soft Cell","TR/ST","Choir Boy","Modern English","The Psychedelic Furs","Simple Minds","Prayers","Marky Ramone","Buzzcocks"]);
-  const planBy=Object.fromEntries(PLAN.filter(p=>p.set).map(p=>[p.set,p]));
+  const PICKS_ED=new Set(["Bad Religion","Circle Jerks","Cold Cave","Gary Numan","Mariachi El Bronx","Morrissey","The Smashing Pumpkins","Soft Cell","TR/ST","Choir Boy","Modern English","The Psychedelic Furs","Simple Minds","Prayers","Marky Ramone","Buzzcocks"]);
+  // Second day plan. Her list had older set times; these are the festival's Nov 11 times.
+  const PLAN_DN=[
+    {s:690,label:"Head to the beach"},
+    {s:720,label:"Walk in",sub:"Gates opened at 11."},
+    {s:735,e:795,label:"Merch",k:"merch",sub:"Tent on the main path, just past the Arcade."},
+    {set:"Modern English",s:820,e:850,sub:"The whole set."},
+    {s:850,e:880,label:"Eat",k:"food",sub:"Food stand between Waves and Black Tide."},
+    {set:"TR/ST",s:880,e:910,sub:"The whole set, then over to Darker."},
+    {set:"Cold Cave",s:910,e:925,sub:"The last 15 minutes. It now overlaps TR/ST."},
+    {set:"Circle Jerks",s:930,e:965},
+    {set:"Gary Numan",s:970,e:995,sub:"Leave at 4:35 for Soft Cell, next door."},
+    {set:"Soft Cell",s:995,e:1035,sub:"The whole set."},
+    {set:"The Psychedelic Furs",s:1040,e:1080},
+    {set:"Bad Religion",s:1085,e:1130},
+    {set:"Simple Minds",s:1130,e:1165,sub:"The second half, next door."},
+    {set:"The Smashing Pumpkins",s:1170,e:1245,sub:"The whole set. Morrissey is right next door after."},
+    {set:"Morrissey",s:1245,e:1320,sub:"No end time posted. Gates close at 10."},
+    {s:1320,label:"Head out"}
+  ];
+  const DROPPED_DN=[
+    ["The Damned","not on the Nov 11 schedule or the lineup poster anymore"],
+    ["Silversun Pickups","Waves, during Circle Jerks and Gary Numan"],
+    ["Missing Persons","Black Tide, during Gary Numan"],
+    ["Adam Ant","Darker, during Psychedelic Furs and Bad Religion"]
+  ];
+  const PICKS_DN=new Set(["Modern English","Cold Cave","TR/ST","Circle Jerks","Gary Numan","Silversun Pickups","Missing Persons","Soft Cell","The Psychedelic Furs","Adam Ant","Bad Religion","Simple Minds","The Smashing Pumpkins","Morrissey"]);
+  const DAYS={ed:{plan:PLAN_ED,picks:PICKS_ED,dropped:DROPPED_ED},dn:{plan:PLAN_DN,picks:PICKS_DN,dropped:DROPPED_DN}};
+  let who="ed"; try{const s=localStorage.getItem("dw-who"); if(s in DAYS) who=s;}catch(e){}
+  let PLAN,PICKS,DROPPED,planBy,selected=-1;
+  function useDay(k){who=k;PLAN=DAYS[k].plan;PICKS=DAYS[k].picks;DROPPED=DAYS[k].dropped;planBy=Object.fromEntries(PLAN.filter(p=>p.set).map(p=>[p.set,p]));}
+  useDay(who);
 
   /* ---------- grid ---------- */
   const START=720,END=1320,SPAN=END-START;
@@ -355,6 +397,8 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     hours.insertAdjacentHTML("beforeend",'<span class="hr" style="top:'+top+'">'+(Math.floor(m/60)%12||12)+(m<720?"a":"p")+'</span>');
     ["dk","wv","bt"].forEach(st=>$("lane-"+st).insertAdjacentHTML("beforeend",'<div class="gridline" style="top:'+top+'"></div>'));
   }
+  function renderSets(){
+  document.querySelectorAll(".lane .set").forEach(b=>b.remove());
   SETS.forEach((x,i)=>{
     const p=planBy[x.name];
     const cls="set "+x.st+(p?" plan":(PICKS.has(x.name)?" skip":""));
@@ -364,10 +408,12 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     if(p&&(p.s!==x.s||p.e!==x.e)) watch='<span class="watch" style="top:calc('+(p.s-x.s)+' * var(--ppm));height:calc('+(p.e-p.s)+' * var(--ppm) - 3px)"></span>';
     $("lane-"+x.st).insertAdjacentHTML("beforeend",'<button type="button" class="'+cls+'" data-i="'+i+'" style="top:'+top+';height:'+h+'" aria-label="'+esc(x.name+", "+STAGE[x.st]+", "+time)+'"><span class="nm">'+esc(x.name)+'</span><span class="tm">'+time+'</span>'+watch+'</button>');
   });
+  }
   $("board").addEventListener("click",e=>{const b=e.target.closest(".set");if(b) select(+b.dataset.i);});
   $("mineOnly").addEventListener("change",e=>$("board").classList.toggle("mine",e.target.checked));
 
-  function select(i){
+  function select(i,keepClosed){
+    selected=i;
     const x=SETS[i],p=planBy[x.name];
     document.querySelectorAll(".set.sel").forEach(b=>b.classList.remove("sel"));
     const btn=document.querySelector('.set[data-i="'+i+'"]'); if(btn) btn.classList.add("sel");
@@ -378,11 +424,13 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     else if(PICKS.has(x.name)){ const d=DROPPED.find(r=>r[0].includes(x.name)); st.className="status"; st.textContent="Your pick, but it doesn't fit"+(d?": "+d[1]+".":"."); }
     else { st.className="status"; st.textContent="Not in your day."; }
     ["dk","wv","bt"].forEach(k=>$("stg-"+k).classList.toggle("on",k===x.st));
-    $("panel").classList.add("open");
+    if(!keepClosed) $("panel").classList.add("open");
   }
   $("closePanel").addEventListener("click",()=>$("panel").classList.remove("open"));
 
   /* ---------- my day ---------- */
+  function renderDay(){
+  $("dayTitle").textContent=DAYTITLE[who];
   $("myday").innerHTML=PLAN.map(p=>{
     const t=p.e?short(p.s)+" to "+short(p.e):clock(p.s);
     let w;
@@ -390,6 +438,15 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     else w=esc(p.label);
     return '<div class="row'+(p.k?" k-"+p.k:"")+'" data-s="'+p.s+'" data-e="'+(p.e||p.s+15)+'"><span class="t">'+t+'</span><span class="w">'+w+(p.sub?'<span class="s">'+esc(p.sub)+'</span>':'')+'</span></div>';
   }).join("");
+  }
+  function show(k){
+    useDay(k); try{localStorage.setItem("dw-who",k);}catch(e){}
+    document.querySelectorAll(".who-toggle button").forEach(b=>{b.textContent=WHO[b.dataset.who];b.setAttribute("aria-checked",String(b.dataset.who===k));});
+    renderSets(); renderDay(); if(typeof tickNow==="function") tickNow();
+    if(selected>=0) select(selected,true);
+  }
+  document.querySelectorAll(".who-toggle").forEach(g=>g.addEventListener("click",e=>{const b=e.target.closest("button[data-who]");if(b&&b.dataset.who!==who) show(b.dataset.who);}));
+  show(who);
   $("myday").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(b){select(+b.dataset.i); if(window.innerWidth>=920) $("board").scrollIntoView({behavior:"smooth",block:"start"});}});
 
 
