@@ -526,7 +526,7 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     const line=pts.slice(0,-1).concat([back]);
     g.innerHTML='<circle cx="'+pts[0][0]+'" cy="'+pts[0][1]+'" r="9"/><path d="M'+line.map(q=>q.join(",")).join(" L")+'"/><path class="tip" d="M'+tip.map(q=>q.map(n=>n.toFixed(1)).join(",")).join(" L")+' Z"/>';
   }
-  function useMap(park){ $("map").hidden=park; $("parkmap").hidden=!park; $("mapLegend").hidden=park; }
+  function useMap(park){ $("map").toggleAttribute("hidden",park); $("parkmap").toggleAttribute("hidden",!park); $("mapLegend").hidden=park; }
   function showPark(){
     selected=-1; useMap(true);
     document.querySelectorAll(".set.sel").forEach(b=>b.classList.remove("sel"));
@@ -580,7 +580,7 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
 
 
   /* ---------- enlarge map ---------- */
-  function openZoom(){const c=($("parkmap").hidden?$("map"):$("parkmap")).cloneNode(true);c.removeAttribute("id");c.querySelectorAll("[id]").forEach(n=>{if(n.tagName.toLowerCase()!=="radialgradient")n.removeAttribute("id");else n.setAttribute("id","gz");});c.querySelectorAll('[fill="url(#g)"]').forEach(n=>n.setAttribute("fill","url(#gz)"));$("zwrap").innerHTML="";$("zwrap").appendChild(c);$("mapzoom").hidden=false;document.body.style.overflow="hidden";}
+  function openZoom(){const c=($("parkmap").hasAttribute("hidden")?$("map"):$("parkmap")).cloneNode(true);c.removeAttribute("id");c.querySelectorAll("[id]").forEach(n=>{if(n.tagName.toLowerCase()!=="radialgradient")n.removeAttribute("id");else n.setAttribute("id","gz");});c.querySelectorAll('[fill="url(#g)"]').forEach(n=>n.setAttribute("fill","url(#gz)"));$("zwrap").innerHTML="";$("zwrap").appendChild(c);$("mapzoom").hidden=false;document.body.style.overflow="hidden";}
   function closeZoom(){$("mapzoom").hidden=true;$("zwrap").innerHTML="";document.body.style.overflow="";}
   $("zoomMap").addEventListener("click",openZoom);
   $("map").addEventListener("click",openZoom); $("parkmap").addEventListener("click",openZoom);
