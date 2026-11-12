@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=Pirata+One&family=Yellowtail&family=Space+Mono:wght@400;700&display=swap">
 <style>
 /* Darker Waves day plan: countdown, official set times as a tap grid with a stage map, the day in order, merch and food. */
 :root{
@@ -141,6 +141,61 @@ h2{font-family:var(--f-display);font-weight:700;font-size:28px;margin:0;letter-s
 .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .foot{color:var(--muted);font-size:13px;max-width:85ch;margin:0}
 @media (prefers-reduced-motion: reduce){.panel{transition:none}}
+
+/* ---------- Darker Waves skin: midnight beach, chrome and gothic type, neon sunset ---------- */
+:root{
+  --bg:#07040c; --bg2:#120a1f; --panel:rgba(22,13,38,.86); --ink:#efe9ff; --muted:#a597c4; --line:#33224f;
+  --amber:#ff4fa3; --amber-soft:rgba(255,79,163,.15); --amber-ink:#1a0410;
+  --teal:#6ef2e0; --waves:#9fb6ff; --gold:#f3c66b; --violet:#9b6bff; --violet-dim:#24163f; --violet-line:#4b2f86;
+  --f-gothic:"Pirata One","UnifrakturCook",Georgia,serif;
+  --f-script:"Yellowtail","Brush Script MT",cursive;
+  --f-mono:"Space Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+body{background:
+  radial-gradient(70% 45% at 50% 105%, rgba(255,110,60,.16), transparent 70%),
+  radial-gradient(90% 60% at 50% -10%, rgba(120,50,210,.38), transparent 65%),
+  #07040c fixed}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0,0,0,.65) 100%)}
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:none}
+.hero::before{content:"";position:absolute;left:-20%;right:-20%;bottom:0;height:46%;pointer-events:none;
+  background:
+    repeating-linear-gradient(90deg, rgba(155,107,255,.35) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(0deg, rgba(155,107,255,.35) 0 1px, transparent 1px 28px);
+  transform:perspective(320px) rotateX(62deg);transform-origin:50% 100%;
+  -webkit-mask-image:linear-gradient(to top, #000 10%, transparent 95%);mask-image:linear-gradient(to top, #000 10%, transparent 95%)}
+.hero::after{content:"";position:absolute;right:max(16px,8vw);top:28px;width:min(260px,42vw);aspect-ratio:1;border-radius:50%;pointer-events:none;opacity:.55;
+  background:linear-gradient(180deg,#ffd27a 0%,#ff7a59 45%,#ff3ea5 75%,#7a2bd6 100%);
+  -webkit-mask-image:repeating-linear-gradient(180deg,#000 0 14px,transparent 14px 18px);mask-image:repeating-linear-gradient(180deg,#000 0 14px,transparent 14px 18px);
+  filter:drop-shadow(0 0 40px rgba(255,79,163,.6))}
+.hero .inner{position:relative;z-index:1}
+h1{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacing:.01em;line-height:.8;display:grid;justify-items:start;margin:4px 0 6px;font-size:clamp(64px,13vw,132px)}
+h1 .chrome{background:linear-gradient(180deg,#ffffff 0%,#e9e3ff 34%,#6c4cc4 50%,#f0e6ff 58%,#b79bff 78%,#5a3aa8 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 0 #2a1650) drop-shadow(0 0 22px rgba(155,107,255,.55))}
+h1 .script{font-family:var(--f-script);font-size:.62em;margin:-.18em 0 0 .9em;transform:rotate(-7deg);
+  background:linear-gradient(180deg,#fff2c4 0%,#f3c66b 45%,#c9781f 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 14px rgba(243,198,107,.45));padding-right:.2em}
+h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacing:.02em;font-size:34px;color:#f3ecff;text-shadow:0 0 18px rgba(155,107,255,.55)}
+.card h3,.panel .who{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacing:.02em}
+.card h3{font-size:26px;color:var(--gold)}
+.panel .who{font-size:34px;color:#f3ecff;text-shadow:0 0 16px rgba(255,79,163,.45)}
+.count-label{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacing:.04em;font-size:26px;color:var(--gold)}
+.eyebrow b{color:var(--gold)}
+.cell{background:rgba(18,10,31,.8);border-color:#3b2763;box-shadow:inset 0 0 18px rgba(155,107,255,.18)}
+.cell .n{color:#fff;text-shadow:0 0 12px rgba(255,79,163,.6)}
+.btnlink{border-color:var(--violet);color:#e4d9ff;background:rgba(18,10,31,.75);box-shadow:0 0 14px rgba(155,107,255,.25)}
+.btnlink.solid{background:linear-gradient(180deg,#ff6fb5,#c2246f);border-color:#ff6fb5;color:#fff;box-shadow:0 0 18px rgba(255,79,163,.45)}
+.board,.panel,.myday,.card{background:var(--panel);border-color:#33224f;box-shadow:0 0 0 1px rgba(155,107,255,.08),0 18px 50px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.colhead{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacing:.03em;font-size:19px;text-shadow:0 0 10px rgba(255,255,255,.25)}
+.set .nm{letter-spacing:.04em}
+.set.plan{box-shadow:0 0 12px rgba(255,79,163,.35)}
+.row .w button{color:#ff8cc4}
+.row.k-merch .w{color:var(--waves)}
+.row.k-food .w{color:var(--teal)}
+.stg text{font-family:"Pirata One",Georgia,serif;font-weight:400;font-size:36px}
+.mapsvg text{font-family:"Pirata One",Georgia,serif;font-weight:400;letter-spacing:.03em}
+@media (max-width:520px){.colhead{font-size:16px}h2{font-size:30px}}
 </style>
 
 </head>
@@ -149,7 +204,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:28px;margin:0;letter-s
 <header class="hero">
   <div class="inner">
     <span class="eyebrow">Huntington City Beach · <b>Saturday, Nov 14</b></span>
-    <h1>Darker <span>Waves</span></h1>
+    <h1><span class="chrome">Darker</span><span class="script">Waves</span></h1>
     <div class="links">
       <a class="btnlink solid" href="https://www.darkerwavesfest.com/schedule" target="_blank" rel="noopener">Official schedule ↗</a>
       <a class="btnlink" href="https://help.darkerwavesfest.com/article/1378-is-there-a-current-map-of-the-festival-grounds" target="_blank" rel="noopener">Official map ↗</a>
@@ -374,7 +429,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:28px;margin:0;letter-s
   /* ---------- drifting waves ---------- */
   const cv=$("waves"),ctx=cv.getContext("2d");let W=0,H=0;
   const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const LINES=[{y:.62,a:14,k:.006,sp:.00025,c:"rgba(255,122,149,.16)"},{y:.70,a:18,k:.0045,sp:.00018,c:"rgba(143,184,255,.12)"},{y:.78,a:12,k:.008,sp:.0003,c:"rgba(86,212,196,.10)"},{y:.86,a:22,k:.0035,sp:.00015,c:"rgba(255,122,149,.09)"}];
+  const LINES=[{y:.62,a:14,k:.006,sp:.00025,c:"rgba(255,79,163,.18)"},{y:.70,a:18,k:.0045,sp:.00018,c:"rgba(155,107,255,.16)"},{y:.78,a:12,k:.008,sp:.0003,c:"rgba(110,242,224,.10)"},{y:.86,a:22,k:.0035,sp:.00015,c:"rgba(243,198,107,.10)"}];
   function size(){const r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
   function draw(ts){ctx.clearRect(0,0,W,H);const t=ts||0;
     LINES.forEach(L=>{ctx.beginPath();for(let x=0;x<=W;x+=8){const y=L.y*H+Math.sin(x*L.k+t*L.sp*6)*L.a+Math.sin(x*L.k*2.3-t*L.sp*4)*L.a*.35; x?ctx.lineTo(x,y):ctx.moveTo(x,y);} ctx.strokeStyle=L.c;ctx.lineWidth=1.5;ctx.stroke();});
