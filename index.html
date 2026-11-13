@@ -399,10 +399,12 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
   // The day plan. set = band name when the stop is a set; w = the part he watches.
   const PLAN_ED=[
     {s:615,e:645,label:"Drive and park",k:"park"},
-    {s:660,e:795,label:"Entry, merch and free time",k:"merch"},
-    {set:"Choir Boy",s:810,e:835,sub:"Leave a few minutes early to walk around the VIP section to Darker."},
+    {s:660,e:800,label:"Entry, merch and free time",k:"merch"},
+    {set:"The Mainliners",s:800,e:815,sub:"The first 15 minutes, then next door to Waves."},
+    {set:"Choir Boy",s:815,e:835,sub:"Leave a few minutes early to walk around the VIP section to Darker."},
     {set:"Modern English",s:835,e:850,sub:"The last 15 minutes."},
-    {s:850,e:880,label:"Eat",k:"food",sub:"Food stand between Waves and Black Tide."},
+    {s:850,e:865,label:"Eat",k:"food",sub:"Food stand between Waves and Black Tide. Take it over to Past Self."},
+    {set:"Past Self",s:865,e:880,sub:"The first 15 minutes, then over to Waves."},
     {set:"TR/ST",s:880,e:910,sub:"The whole set, then around the VIP section to Darker."},
     {set:"Cold Cave",s:910,e:925,sub:"The last 15 minutes."},
     {set:"Circle Jerks",s:930,e:965},
@@ -420,7 +422,7 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     ["The Damned","not on the Nov 11 schedule or the lineup poster anymore"],
     ["Prayers, Marky Ramone and Buzzcocks","Black Tide, during Furs, Bad Religion and Simple Minds"]
   ];
-  const PICKS_ED=new Set(["Bad Religion","Circle Jerks","Cold Cave","Gary Numan","Mariachi El Bronx","Morrissey","The Smashing Pumpkins","Soft Cell","TR/ST","Choir Boy","Modern English","The Psychedelic Furs","Simple Minds","Prayers","Marky Ramone","Buzzcocks"]);
+  const PICKS_ED=new Set(["Bad Religion","Circle Jerks","Cold Cave","Gary Numan","Mariachi El Bronx","Morrissey","The Smashing Pumpkins","Soft Cell","TR/ST","Choir Boy","Modern English","The Psychedelic Furs","Simple Minds","Prayers","Marky Ramone","Buzzcocks","The Mainliners","Past Self"]);
   // Second day plan. Her list had older set times; these are the festival's Nov 11 times.
   const PLAN_DN=[
     {s:615,e:645,label:"Drive and park",k:"park"},
