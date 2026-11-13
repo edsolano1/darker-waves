@@ -246,6 +246,7 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
 .parkmap .sm{font-size:20px}
 .parkmap .blk rect{fill:#2e2450;stroke:#4a3a78;stroke-width:2}
 .parkmap .blk text{fill:#ece8f2;font-size:30px}
+.parkmap .park rect{stroke:var(--gold);stroke-width:3}
 .parkmap .blk text.sm{fill:#b7add6;font-size:20px}
 .parkmap .bridge{stroke:#ece8f2;stroke-width:14;stroke-linecap:round;opacity:.8}
 .parkmap .lbl{fill:#b7add6;font-size:22px}
@@ -342,7 +343,7 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
           <g class="stg" id="stg-wv"><circle class="glow" cx="490" cy="250" r="160" fill="url(#g)"/><rect x="380" y="200" width="220" height="100" rx="12"/><text x="490" y="266" text-anchor="middle">WAVES</text></g>
           <g class="stg" id="stg-bt"><circle class="glow" cx="705" cy="160" r="160" fill="url(#g)"/><rect x="590" y="110" width="230" height="100" rx="12"/><text x="705" y="176" text-anchor="middle">BLACK TIDE</text></g>
         </svg>
-        <svg class="mapsvg parkmap" id="parkmap" viewBox="0 0 1220 800" role="img" aria-label="Walk from the Walmart plaza on Beach Blvd to the festival gate" hidden>
+        <svg class="mapsvg parkmap" id="parkmap" viewBox="0 0 1220 800" role="img" aria-label="Walk from the Walmart lot on Beach Blvd to the festival gate" hidden>
           <path d="M0,230 L1220,840 L1220,800 L0,800 Z" fill="#5e4a8f" opacity=".35"/>
           <path d="M0,150 L1220,760 L1220,840 L0,230 Z" fill="#c9a85a" opacity=".22"/>
           <path d="M0,0 L1220,0 L1220,690 L0,80 Z" fill="#231b3d"/>
@@ -350,9 +351,10 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
           <path class="road" d="M1000,0 L1000,600"/>
           <path class="road thin" d="M560,30 L1220,30"/>
           <text class="rd" x="28" y="122" font-size="22" style="font-size:22px" transform="rotate(26.6 28 122)">PACIFIC COAST HWY</text>
-          <text class="rd" x="1030" y="330" transform="rotate(90 1030 330)">BEACH BLVD</text>
+          <text class="rd" x="1030" y="290" transform="rotate(90 1030 290)">BEACH BLVD</text>
           <text class="rd sm" x="1120" y="20">ATLANTA AVE</text>
-          <g class="blk"><rect x="720" y="70" width="250" height="170" rx="10"/><text x="845" y="150" text-anchor="middle">WALMART</text><text class="sm" x="845" y="190" text-anchor="middle">PLAZA LOT</text></g>
+          <g class="blk"><rect x="700" y="70" width="270" height="170" rx="10"/><text x="835" y="150" text-anchor="middle">BEACH PROMENADE</text><text class="sm" x="835" y="190" text-anchor="middle">CHASE</text></g>
+          <g class="blk park"><rect x="1035" y="70" width="175" height="170" rx="10"/><text x="1122" y="150" text-anchor="middle">WALMART</text><text class="sm" x="1122" y="190" text-anchor="middle">PARK HERE</text></g>
           <g class="blk"><rect x="320" y="150" width="210" height="110" rx="10"/><text x="425" y="214" text-anchor="middle">WATERFRONT</text></g>
           <g class="blk"><rect x="640" y="330" width="210" height="100" rx="10"/><text x="745" y="392" text-anchor="middle">HYATT</text></g>
           <path class="bridge" d="M790,430 L826,545"/>
@@ -531,9 +533,9 @@ h2{font-family:var(--f-gothic);font-weight:400;text-transform:none;letter-spacin
     selected=-1; useMap(true);
     document.querySelectorAll(".set.sel").forEach(b=>b.classList.remove("sel"));
     $("pName").textContent="Parking to the gate";
-    $("pMeta").innerHTML='<span><b>Walmart plaza</b></span><span>Beach Blvd at Atlanta, about 15 minutes on foot</span>';
+    $("pMeta").innerHTML='<span><b>Walmart lot</b></span><span>Beach Blvd at Atlanta, across from Beach Promenade. About 15 minutes on foot</span>';
     const st=$("pStatus"); st.className="status"; st.textContent="";
-    drawPts([[960,170],[1000,170],[1000,560],[990,640],[795,592]],"parkwalk");
+    drawPts([[1040,175],[1018,175],[1018,560],[1000,645],[795,592]],"parkwalk");
     $("pRoute").textContent="Down Beach Blvd, cross PCH at the light, then right to the gate by the Hyatt bridge.";
     $("panel").classList.add("open");
   }
